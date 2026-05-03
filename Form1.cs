@@ -45,24 +45,25 @@ namespace TradingSystem
 
         private async void btnGetTrades_Click(object sender, EventArgs e)
         {
-            var filter = new TradeFilter
-            {
-                DateFrom = dtpDateFrom.Value.Date,
-                DateTo = dtpDateTo.Value.Date,
-
-                Security = string.IsNullOrWhiteSpace(txtBoxSecurity.Text) ? null : txtBoxSecurity.Text.Trim(),
-
-                Portfolio = string.IsNullOrWhiteSpace(cmbPortfolio.Text) ? null : cmbPortfolio.Text,
-
-                TradeState = string.IsNullOrWhiteSpace(cmbState.Text) ? null : cmbState.Text,
-
-                TradeTypeDescription = string.IsNullOrWhiteSpace(cmbType.Text) ? null : cmbType.Text
-            };
-
-            var filteredTradesList = await _tradeService.GetFilteredTrades(filter);
+            
 
             try
             {
+                var filter = new TradeFilter
+                {
+                    DateFrom = dtpDateFrom.Value.Date,
+                    DateTo = dtpDateTo.Value.Date,
+
+                    Security = string.IsNullOrWhiteSpace(txtBoxSecurity.Text) ? null : txtBoxSecurity.Text.Trim(),
+
+                    Portfolio = string.IsNullOrWhiteSpace(cmbPortfolio.Text) ? null : cmbPortfolio.Text,
+
+                    TradeState = string.IsNullOrWhiteSpace(cmbState.Text) ? null : cmbState.Text,
+
+                    TradeTypeDescription = string.IsNullOrWhiteSpace(cmbType.Text) ? null : cmbType.Text
+                };
+
+                var filteredTradesList = await _tradeService.GetFilteredTrades(filter);
                 if (!filteredTradesList.Any())
                 {
                     MessageBox.Show("No trades found.");
@@ -123,7 +124,7 @@ namespace TradingSystem
 
             var calculationResults = _positionCalService.Calculate(trades);
             dataGridView2.DataSource = null;
-            dataGridView2.DataSource = trades;
+            dataGridView2.DataSource = calculationResults;
             // call callculation service
             Console.WriteLine(  );
         }
