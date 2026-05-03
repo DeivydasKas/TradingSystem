@@ -37,7 +37,7 @@ namespace TradingSystem.Services
         {
             decimal buyQuantity = 0;
 
-            var buyTrades = trades.Where(x => x.TradeTypeDescription.Equals("buy", StringComparison.OrdinalIgnoreCase));
+            var buyTrades = trades.Where(x => string.Equals(x.TradeTypeDescription, "buy", StringComparison.OrdinalIgnoreCase));
 
 
             foreach (var item in buyTrades)
@@ -52,7 +52,7 @@ namespace TradingSystem.Services
         {
             decimal sellQuantity = 0;
 
-            var sellTrades = trades.Where(x => x.TradeTypeDescription.Equals("sell", StringComparison.OrdinalIgnoreCase));
+            var sellTrades = trades.Where(x => string.Equals(x.TradeTypeDescription, "sell", StringComparison.OrdinalIgnoreCase));
 
 
             foreach (var item in sellTrades)
@@ -79,7 +79,7 @@ namespace TradingSystem.Services
             decimal spendMoney = 0;
             decimal qty = 0;
 
-            var buyTrades = trades.Where(x => x.TradeTypeDescription.Equals("buy", StringComparison.OrdinalIgnoreCase));
+            var buyTrades = trades.Where(x => string.Equals(x.TradeTypeDescription, "buy", StringComparison.OrdinalIgnoreCase));
 
             foreach (var item in buyTrades)
             {
@@ -101,7 +101,7 @@ namespace TradingSystem.Services
             decimal spendMoney = 0;
             decimal qty = 0;
 
-            var sellTrades = trades.Where(x => x.TradeTypeDescription.Equals("sell", StringComparison.OrdinalIgnoreCase));
+            var sellTrades = trades.Where(x => string.Equals(x.TradeTypeDescription, "sell", StringComparison.OrdinalIgnoreCase));
 
             foreach (var item in sellTrades)
             {
@@ -122,6 +122,7 @@ namespace TradingSystem.Services
 
             foreach (var item in trades)
             {
+                if(IsBuyOrSellTrade(item))
                 sumCommissions += item.Commission;
             }
 
@@ -139,11 +140,11 @@ namespace TradingSystem.Services
             foreach (var item in trades)
             {
                 decimal sum = 0;
-                if (item.TradeTypeDescription.Equals("buy", StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(item.TradeTypeDescription, "buy", StringComparison.OrdinalIgnoreCase))
                 {
                     sum = -(item.Price * item.Quantity) - item.Commission;
                 }
-                if (item.TradeTypeDescription.Equals("sell", StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(item.TradeTypeDescription, "sell", StringComparison.OrdinalIgnoreCase))
                 {
                     sum = (item.Price * item.Quantity) - item.Commission;
                 }
@@ -151,6 +152,21 @@ namespace TradingSystem.Services
             }
 
             return finalSum;
+        }
+
+        private bool IsBuyTrade(TradeForCalculations trade)
+        {
+            return string.Equals(trade.TradeTypeDescription, "buy", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private bool IsSellTrade(TradeForCalculations trade)
+        {
+            return string.Equals(trade.TradeTypeDescription, "sell", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private bool IsBuyOrSellTrade(TradeForCalculations trade)
+        {
+            return IsBuyTrade(trade) || IsSellTrade(trade);
         }
 
 
