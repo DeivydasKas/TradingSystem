@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../TradingSystem.Tests/TradingSystem.Tests.csproj" Id="f79ea403-7dae-4209-b141-c38837d12f95" />
+  <Project Path="TradingSystem.csproj" />
+</Solution>
