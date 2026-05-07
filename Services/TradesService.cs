@@ -61,9 +61,14 @@ namespace TradingSystem.Services
                 url += "?" + string.Join("&", queryParams);
             }
 
-            var response = await _httpClient.GetFromJsonAsync<List<Trade>>(url);
+            var response = await _httpClient.GetFromJsonAsync<ApiResult<List<Trade>>>(url) ?? throw new Exception("No response from API");
 
-            return response ?? new List<Trade>();
+            if(!response.Success)
+            {
+                throw new Exception(response.Message);
+            }
+
+            return response.Data ?? new List<Trade>();
 
         }
 
@@ -110,10 +115,15 @@ namespace TradingSystem.Services
                 MessageBox.Show(error);
                 return new List<TradeForCalculations>();
             }
-            var data = await response.Content.ReadFromJsonAsync<List<TradeForCalculations>>();
+            var data = await response.Content.ReadFromJsonAsync<ApiResult<List<TradeForCalculations>>>() ?? throw new Exception("Not possible to get API response");
+
+            if(!data.Success)
+            {
+                throw new Exception(data.Message);
+            }
            
 
-            return data ?? new List<TradeForCalculations>();
+            return data.Data ?? new List<TradeForCalculations>();
         }
 
     }
